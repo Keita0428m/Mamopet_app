@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :set_post, only: %i(show destroy)
 
   def new
     @post = Post.new
@@ -18,11 +19,19 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find_by(id: params[:id])
+
+  end
+
+  def destroy
+    redirect_to "/posts", notice: '削除しました' if @post.destroy
   end
 
   private
     def post_params
       params.require(:post).permit(:title, :body, :video)
+    end
+
+    def set_post
+      @post = Post.find_by(id: params[:id])
     end
 end
